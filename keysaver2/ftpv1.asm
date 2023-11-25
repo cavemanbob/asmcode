@@ -96,9 +96,7 @@ VK_LEFT equ 25h
 	biglow			db	0
 	ramsize			db	10h dup(0)
 	lpszAgent		db 4h dup(0)
-	lpszUserName	db 'if0_35446600',0
-	lpszPassword	db 'ZOahxL4yUt',0
-	lpszServerName  db 'ftpupload.net',0
+
 	lpclose			db	8h dup(0)
 
 
