@@ -8,3 +8,4 @@
 - Keyprinter-> This program write to console which key is pressing
 - Keysaver-> This program is almost the same as keypret but this one write pressed keys in a file instead of console print
 - Keysaver2 -> Added some features to Keysaver (about capslock and upper lower case but still not perfect, bugged most of time) 
+- Sugar Coma -> Its a functional keylogger that can pass virus scan (until a while ago cuz i added it to virustotal 4/72 but VM got it. also in my tests only real time protection catched it when i hold a key)
